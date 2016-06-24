@@ -1,0 +1,84 @@
+https://angular.io/docs/js/latest/quickstart.html
+
+FROM APP.COMPONENT.JS FILE
+
+The above creates a visual component named AppComponent by chaining the Component and Class methods that belong to the global Angular ng.core
+
+The Component method takes a configuration object with two properties.
+
+The Class method is where we implement the component itself, giving it properties and methods that bind to the view and whatever behavior is appropriate for the UI.
+
+
+
+Modules
+Angular is modular. Angular applications consist of many files each dedicated to a purpose
+
+ES5 JavaScript doesn't have a native module system.
+There are several popular 3rd party module systems we could use. Instead for simplicities sake and to avoid picking favorites, we'll create a single global
+namespace for our application. We'll call it 'app' and add all of our code artifacts to this global object.
+
+We don't want to pollute the global namespace with anything else. SO within each file we surround  the code in a IIFE
+('Immediately Invoked Function Expression')
+
+// (function(app{})(window.app || (window.app = {}));
+
+Most application files export one thing by adding that thing to the app namespace.
+
+Our app.component.js file exports the AppComponent.
+app.AppComponent =
+
+A more sophisticated application would have child components that descend from AppComponent in a visual tree. A more sophisticated app would have more files and modules, at least as many as it had components.
+
+Quickstart isn't sophisticated; one component is all we need. Yet modules play a fundamental Organizational role in this small app.
+
+Modules rely on other modules. In Javascript Angular apps, when we need something provided by another module, we get it from the app object. When another module needs to refer to AppComponent, it gets it from the app.AppComponent like this
+
+// ng.platformBrowserDynamic.boostrap(app.AppComponent);
+
+
+Angular is also modular. It is a collection of library modules. Each library is itself a module made up of several, related feature modules.
+
+When we need something from Angular, we use the ng object.
+
+
+At the bottom of the file is an empty, do nothing class definition for our AppComponent class. When we are ready to build a substantive application we can expand this object with properties and application logic. Our AppComponent class has nothing but an empty constructor because we need nothing in the Quickstart App.
+
+// .class({ constructor: function(){}  });
+
+THE COMPONENT DEFINITION OBJECT
+
+ng.core.Component() tells angular that this class definition object is an Angular component. The configuration object passed to the ng.core.Component() method has two fields, a selector and a template.
+
+The selector specifies a simple CSS selector for a host HTML element named my-app. Angular creates and displays an instance of our AppComponent whereever it encounters a my-app element in the host HTML.
+
+The template proporty holds the components companion template. A template is a form of HTML that tells Angular how to render a view. Our template is a single line of HTML at this point.
+
+BOOTSTRAP IT!
+In the main.js file
+(function(app) {
+  document.addEventListener('DOMContentLoaded', function() {
+    ng.platformBrowserDynamic.bootstrap(app.AppComponent);
+  });
+})(window.app || (window.app = {}));
+
+We need two things to launch the application:
+1. Angular's browser boostrap funciton.
+2. The applications root component that we just wrote.
+
+We have both in our 'namespaces'. Then we call bootstrap, passing in the root component type, AppComponent.
+
+Why the boostraping
+
+Bootstraping is platform-specific
+
+We use the boostrap function from ng.platformBrowserDynamic not ng.core
+
+We only call "core" those capabilities that are the same across all platform targets. True, that most Angular applications run only in a browser and we'll call the boostrap function from this library most of the time. It's pretty 'core' if we're always writing for browsers. 
+
+but it is possible to load a component in a different environment. We might load it on a mobile device with ApacheCordova or NativeScript. We might wish to render the first page of our application on the server to improve SEO.
+
+These require a different kind of boostrap function we would import from another library.
+
+At this point we've told Angular to launch the app in a browser with our component at the root. Where will Angular put it?
+
+Angular displays our application in a specific location in our index.html.
